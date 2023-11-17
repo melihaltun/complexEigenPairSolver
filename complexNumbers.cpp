@@ -110,3 +110,14 @@ complex polar2z(double r, double theta)
 	z.imag = r*sin(theta);
 	return z;
 }
+
+// z2 = sqrt(z1)
+complex complexSqrt(complex z1) {
+	double r, theta;
+	complex z2;
+	r = sqrt(z1.real * z1.real + z1.imag * z1.imag);
+	theta = angle(z1);
+	z2.real = sqrt(r) * cos(theta / 2);
+	z2.imag = sqrt(r) * sin(theta / 2);
+	return z2;
+}

@@ -10,27 +10,31 @@
 //V, D = eig(A)
 void solve2by2eig(complex A[], complex V[], complex D[])
 {
-	double a, b, c, delta, tolr = EPS, r, theta, nV1, nV2, m1, m2, a1, a2;
-	complex x, y, z, x2, V1[2], V2[2];
+	double tolr = EPS, r, theta, nV1, nV2, m1, m2, a1, a2;
+	complex x, y, z, x2, V1[2], V2[2], a, b, c, delta;
 
 	memset(D, 0, 2 * sizeof(complex));
 
-	a = 1;
-	b = -A[lin_index(0, 0, 2)].real - A[lin_index(1, 1, 2)].real;
-	c = A[lin_index(0, 0, 2)].real * A[lin_index(1, 1, 2)].real - A[lin_index(1, 0, 2)].real * A[lin_index(0, 1, 2)].real;
+	// a = 1, b = -A[0,0]-A[1,1], c = A[0,0]*A[1,1]-A[0,1]*A[0,1]
+	a = { 1, 0 };
+	b = negate(complexAddition(A[lin_index(0, 0, 2)], A[lin_index(1, 1, 2)]));
+	c = complexSubtraction(complexMultiplication(A[lin_index(0, 0, 2)], A[lin_index(1, 1, 2)]), complexMultiplication(A[lin_index(0, 1, 2)], A[lin_index(1, 0, 2)]));
 
 	// use discriminant to solve for eigenvalues
-	delta = b*b - 4 * a*c;
+	//delta = b*b - 4*a*c;
+	delta = complexSubtraction(complexMultiplication(b, b), complexMultiplication({ 4,0 }, complexMultiplication(a, c)));
 
-	if (delta < 0) {
-		D[0].real = -b / (2 * a);
-		D[0].imag = sqrt(-delta) / (2 * a);
-		D[1].real = -b / (2 * a);
-		D[1].imag = -sqrt(-delta) / (2 * a);
+	if (delta.real < 0 && fabs(delta.imag) < tolr) {
+		D[0].real = -b.real / (2 * a.real);
+		D[0].imag = sqrt(-delta.real) / (2 * a.real);
+		D[1].real = -b.real / (2 * a.real);
+		D[1].imag = -sqrt(-delta.real) / (2 * a.real);
 	}
 	else {
-		D[0].real = (-b + sqrt(delta)) / (2 * a);
-		D[1].real = (-b - sqrt(delta)) / (2 * a);
+		complex sqrDelta = complexSqrt(delta);
+		complex two_a = complexMultiplication({ 2, 0 }, a);
+		D[0] = complexDivision(complexSubtraction(sqrDelta, b), two_a);   // (-b + sqrt(delta))/(2*a);
+		D[1] = complexDivision(negate(complexAddition(sqrDelta, b)), two_a);   // (-b - sqrt(delta))/(2*a);
 	}
 
 	// find eigen vectors
@@ -114,8 +118,8 @@ void solve2by2eig(complex A[], complex V[], complex D[])
 		a1 = angle(V2[0]);
 		a2 = angle(V2[1]);
 
-		V2[0] = { m1, 0 };
-		V2[1] = { m2*cos(a2 - a1),  m2*sin(a2 - a1) };
+		V2[0] = { m1*cos(a1 - a2),  m1 * sin(a1 - a2) };
+		V2[1] = { m2, 0};
 	}
 
 	V[0] = V1[0];
@@ -189,7 +193,8 @@ void eig(complex A[], unsigned int N, complex V[], complex D[])
 			complexEigenPairCount++;
 			complexPairs[i] = complexEigenPairCount;
 			i++;
-			complexPairs[i] = complexEigenPairCount;
+			if (i < N)
+				complexPairs[i] = complexEigenPairCount;
 		}
 		i++;
 	}

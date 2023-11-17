@@ -25,5 +25,6 @@ double angle(complex z1);
 complex complexExp(double alpha);
 void z2polar(complex z, double *r, double *theta);
 complex polar2z(double r, double theta);
+complex complexSqrt(complex z1);
 
 #endif
