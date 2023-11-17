@@ -5,17 +5,18 @@
 **/
 
 #include "backSubstitution.h"
+#define EPS 2.221E-12
 
 // Finds x in linear system: U x = y, where x, and y are vectors and U is a N x N upper triangular matrix
 void backwardsSubstitution(complex U[], complex y[], unsigned int N, complex x[])
 {
 	int MSD, i, j;
-	double absMax_U, tolr, eps = 2.221E-16;
+	double absMax_U, tolr;
 
 	absMax_U = absMaxElement(U, N, N);
 
 	MSD = (int)ceil(log10(absMax_U));
-	tolr = eps * pow(10.0, (double)(MSD + 1));
+	tolr = EPS * pow(10.0, (double)(MSD + 1));
 
 	for (i = N-1; i >= 0; i--) {
 		x[i] = equals(y[i]);

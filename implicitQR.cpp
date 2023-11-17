@@ -6,6 +6,7 @@
 
 
 #include "implicitQR.h"
+#define EPS 2.221E-12
 
 // for the math behind this implementation see:
 // http://people.inf.ethz.ch/arbenz/ewp/Lnotes/2010/chapter3.pdf
@@ -106,7 +107,7 @@ void doubleShiftInnerLoop(complex H[], unsigned int N, unsigned int p, complex N
 		}
 
 		MSD = ceil(log10(maxM));
-		tolr = 2.3E-16*pow(10.0, (double)MSD);
+		tolr = EPS * pow(10.0, (double)MSD);
 
 		for (i = 1; i < N*N; i++) {
 			if (tolr > fabs(Q[i].imag)) {
@@ -132,7 +133,7 @@ void doubleShiftInnerLoop(complex H[], unsigned int N, unsigned int p, complex N
 		}
 
 		MSD = ceil(log10(maxM));
-		tolr = 2.3E-16*pow(10.0, (double)MSD);
+		tolr = EPS * pow(10.0, (double)MSD);
 
 		for (i = 1; i < N*N; i++) {
 			if (tolr > fabs(NH[i].imag)) {
@@ -178,7 +179,7 @@ void doubleShiftInnerLoop(complex H[], unsigned int N, unsigned int p, complex N
 	}
 
 	MSD = ceil(log10(maxM));
-	tolr = 2.3E-16*pow(10.0, (double)MSD);
+	tolr = EPS * pow(10.0, (double)MSD);
 
 	for (i = 1; i < N*N; i++) {
 		absM = magnitude(Q[i]);
@@ -206,7 +207,7 @@ void doubleShiftInnerLoop(complex H[], unsigned int N, unsigned int p, complex N
 	}
 
 	MSD = ceil(log10(maxM));
-	tolr = 2.3E-16*pow(10.0, (double)MSD);
+	tolr = EPS * pow(10.0, (double)MSD);
 
 	for (i = 1; i < N*N; i++) {
 		absM = magnitude(NH[i]);
@@ -231,7 +232,7 @@ void doubleShiftInnerLoop(complex H[], unsigned int N, unsigned int p, complex N
 void doubleShift(complex H[], unsigned int N, complex Q[], complex R[])
 {
 	unsigned int p = N, maxIter = 1000, k = 0;
-	double tolr = 2.3E-16;
+	double tolr = EPS;
 	complex *HH, *NH, *QQ, *Qnew;
 	
 	HH = (complex*)malloc(N * N * sizeof(complex));

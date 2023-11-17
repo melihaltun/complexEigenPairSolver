@@ -5,11 +5,12 @@
 **/
 
 #include "GivensQR.h"
+#define EPS 2.221E-12
 
 // plane rotation using Givens' method
 void complexGivensRotation(complex a, complex b, complex *c, complex *s)
 {
-	double tolr = 2.3E-16, r;
+	double tolr = EPS, r;
 	if (magnitude(b) < tolr) {
 		*c = { 1.0, 0.0 };
 		*s = { 0.0, 0.0 };
@@ -70,7 +71,7 @@ void qrGivensComplex(complex A[], unsigned int N, unsigned int M, complex Q[], c
 void qrIteration(complex A[], unsigned int N, complex Q[], complex R[])
 {
 	unsigned int k,  maxIter = 1000;
-	double n1, n2, tolr = 2.3E-16;
+	double n1, n2, tolr = EPS;
 	complex *M, *V, *D, *Vnew;
 
 	M = (complex*)malloc(N*N * sizeof(complex));

@@ -5,12 +5,12 @@
 **/
 
 #include"eigenPairs.h"
-
+#define EPS 2.221E-12
 
 //V, D = eig(A)
 void solve2by2eig(complex A[], complex V[], complex D[])
 {
-	double a, b, c, delta, tolr = 2.3E-16, r, theta, nV1, nV2, m1, m2, a1, a2;
+	double a, b, c, delta, tolr = EPS, r, theta, nV1, nV2, m1, m2, a1, a2;
 	complex x, y, z, x2, V1[2], V2[2];
 
 	memset(D, 0, 2 * sizeof(complex));
@@ -130,7 +130,7 @@ void eig(complex A[], unsigned int N, complex V[], complex D[])
 {
 	unsigned int i, j, k, complexEigenPairCount = 0;
 	bool offDiagonals = false;
-	double tolr = 2.3E-16, nv, mag1, mag2, ang1, ang2;
+	double tolr = EPS, nv, mag1, mag2, ang1, ang2;
 	complex R2[2 * 2], V2[2 * 2], D2[2];
 
 	complex *H, *U, *Q, *R, *R_, *Q_, *W, *RR, *DD, *rRR, *qRR, *y, *v, *Wnew;

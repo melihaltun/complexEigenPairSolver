@@ -5,6 +5,7 @@
 **/
 
 #include "Hessenberg.h"
+#define EPS 2.221E-12
 
 //Hessenberg reduction of matrix A. A = U*H where H is an upper Hessenberg matrix.
 void hessenberg(complex A[], unsigned int N, complex H[], complex U[])
@@ -20,7 +21,7 @@ void hessenberg(complex A[], unsigned int N, complex H[], complex U[])
 
 
 	MSD = (int)ceil(log10(absMax_A));
-	tolr = eps * pow(10.0, (double)(MSD + 1));
+	tolr = EPS * pow(10.0, (double)(MSD + 1));
 
 	complexIdentity(U, N);
 
